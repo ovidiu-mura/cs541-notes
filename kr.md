@@ -81,4 +81,27 @@
 
 * Compact notation for PROP, reduces mistakes
 
-## 
+## The Four Squares Puzzle
+
+* Given these four pieces
+
+        +-----+  +-----+  +-----+  +-----+
+        |  3  |  |  3  |  |  2  |  |  1  |
+        |4   1|  |2   4|  |4   1|  |2   4|
+        |  2  |  |  1  |  |  3  |  |  3  |
+        +-----+  +-----+  +-----+  +-----+
+
+  we can rearrange and rotate them arbitrarily and assemble
+  them into a square
+
+        +-----+-----+
+        |  4  |  3  |
+        |3   1|1   4|
+        |  2  |  2  |
+        +-----+-----+
+        |  2  |  4  |
+        |3   1|2   3|
+        |  4  |  1  |
+        +-----+-----+
+
+  Can we make a square such that all the edges match?
