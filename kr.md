@@ -1,4 +1,4 @@
-## Logical Problem Representation
+## Problem Representation
 
 * Solving a problem with a computer: 
 
