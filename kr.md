@@ -110,7 +110,7 @@
   Can we make a square such that all the edges match?
 
 * Obvious approach: Plain ol' state space search. Pain to
-  code, but should run very fast: 3! × 2^4 = 96 states
+  code, but should run very fast: 3! × 4^4 = 1536 states
   
 * Ah, but 3×3, 4×4, etc…
 
@@ -157,7 +157,7 @@
 
 * No piece is at more than one location
 
-        forall s . forall p1, p2 . not l(s, p1) or not l(s, p2)
+        forall s . forall p1, p2 | p1 =/= p2 . not l(s, p1) or not l(s, p2)
 
 * Every piece is at some rotation
 
@@ -165,20 +165,20 @@
 
 * No piece has more than one rotation
 
-        forall p . forall k1, k2 . not r(p, k1) or not r(p, k2)
+        forall p . forall k1, k2 | k1 =/= k2 . not r(p, k1) or not r(p, k2)
 
 ## Modeling Four Squares: Fancy Constraints
 
 * Square coordinates are a function of piece location and rotation
 
-        forall s, p, k, n .
+        forall s, p, k, e, n .
             m(s, e, n) iff l(p, s) and r(p, k) and v(p, (e + k) mod 4, n)
 
 * Edges must match
 
         forall s1, e1, s2, e2 |
            s1 = 1 and e1 = 1 and s2 = 2 and e2 = 3 or … .
-           exists n . m(s1, e1, n) and m(s2, e2, n)
+           forall n . m(s1, e1, n) iff m(s2, e2, n)
 
 ## "Grounding" As PROP
 
