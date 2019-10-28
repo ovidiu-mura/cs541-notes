@@ -13,7 +13,6 @@ reasoning
 
 * Method: assign probabilities to events and combinations of events
 
-
 * Reason from model using calculation
 
 * This is a general plan:
@@ -24,13 +23,36 @@ reasoning
                v                            |
              Model   -----------------> Extrapolation
 
-## Fundamentals Of Probability
+## Probability of Events
 
-* Domain: propositions
+* Domain: events
 
-    * *pr(p)* is probability of event
+    * *pr(E)* is probability that event *E* happens
 
-    * Here, *p* is a prop formula
+    * *pr(E) = #E / (#E + #¬E)*
+
+    * For a coin *pr(H) = #H / (#H + #T) = 1 / 2*
+
+    * For a pair of dice:
+
+         * *pr(R7) = #R7 / #R*
+         
+         * *#R7 = #{(1, 6), (2, 5), (3, 4), …} = 6*
+
+         * *#R = #{D×D} = 36*
+         
+         * *pr(R7) = 6 / 36 = 1/6*
+
+         * Check with computer program
+           [prob7](http://github.com/pdx-cs-ai/prob7]
+
+## Probability of Logical Situations
+
+* Domain: propositional formula
+
+    * *pr(p)* is probability of logical combination of events
+
+    * *p* is a prop formula
 
 * Priors and conditionals
 
@@ -58,7 +80,7 @@ reasoning
 
 ## Independence
 
-* *p* and *q* are conditionally independent when  *pr(p|q) = pr(p)*
+* When *p* and *q* are conditionally independent *pr(p|q) = pr(p)*
 
     * By Bayes's Rule
 
@@ -70,7 +92,7 @@ reasoning
 
         * *pr(p ∧ q) = pr(p|q) pr(q) = pr(p) pr(q)*
 
-* *p* and *q* are strictly independent when also *pr(p ∧ q) = 0*
+* When *p* and *q* are strictly independent *pr(p ∧ q) = 0*
 
     * In this case, disjunction gets easier
 
@@ -82,7 +104,7 @@ reasoning
             = pr(p) + pr(q) + pr(p) pr(q)
             = pr(p) + pr(q)
 
-## Applying Bayes's Rule
+## Bayes's Rule
 
 * Given
 
@@ -102,23 +124,57 @@ reasoning
 
     * *pr(H|E) = pr(E|H) pr(H) / pr(E)*
 
-problem: everything depends on everything else
+## The Medical Example
 
-need to know impossible number of prior and conditional probabilities to
-conclude anything
+* H = "You have Glaubner's Disease"  
+  E = "Reaper's Test is positive"
+
+* Rare disease: *pr(H) = 1e-6*
+
+* Low false positive rate: *pr(E|¬H) = 1e-4*
+
+* Perfect false negative rate: *pr(E|H) = 1*
+
+        pr(H|E) = pr(H) pr(E|H) / pr(E)
+                = pr(H) / pr(E∧H ∨ E∧¬H)
+                = pr(H) / (pr(E|¬H) pr(¬H) + pr(E|H) pr(H))
+                = 1e-6 / (1e-4 × (1-1e-6) + 1e-6)
+                ~= 1e-6 / 1e-4 = 1e-2 = 0.01
+
+* IRL the false negative rate will be nonzero too, so you
+  will not learn a ton from the test either way
+
+* Been there
 
 ## Bayesian Belief Networks
 
-* Bayes Net (BBN, influence diagram): indicate which priors and
+* Bayes Net (BBN, influence diagram) : indicate which priors and
   conditionals have significant influence in practice
 
-    * causal/top-down: *p(M|L) = p(M∧B|L) + p(¬M∧¬B|L)*
+                        Cloudy
+                       /      \
+                  Sprinkler   Rain
+                       \      /
+                      Wet Grass
 
-    * diagnostic/bottom-up: *p(¬L|¬M) = p(¬M|¬L) p(¬L) / p(¬M)*
+* Usually reason one of two ways:
+
+    * causal/top-down: 
+    
+             p(W|C) = p(W|S∨R)
+                    = 1 - p(W|¬S) p(¬S|C) p(C) ×
+                          p(W|¬R) p(¬R|C) p(C)
+
+    * diagnostic/bottom-up: *p(C|W)*
 
 * Polytrees: special case for easy computation
 
-* Learning with BBNs
+* Problem: everything depends on everything else
+
+    * Need to know impossible number of prior and conditional
+      probabilities to conclude anything
+
+    * Maybe *learn* probabilities?
 
 ## Is Your Probabilistic Model Meaningful?
 
@@ -126,16 +182,8 @@ conclude anything
 
 * MYCIN and probabilities *vs* "likelihoods"
 
-* Cox's Theorem: under reasonable assumptions, any labeling of
-  logical sentences with real numbers will be consistent with
-  probability
+* Consequence of Cox's Theorem: under reasonable
+  assumptions, any labeling of logical sentences with real
+  numbers will be consistent with probability
 
-* Problems with real numbers
-
-## Decision theory
-
-* The utility equation: 
-
-* Transitivity and other paradoxes
-
-* Cost of gathering information
+* Measurement issues; numeric issues
