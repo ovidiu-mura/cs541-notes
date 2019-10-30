@@ -132,7 +132,10 @@
 
 ## Modeling Four Squares: Setup
 
-* Number the pieces 1..4, the positions in the square 1..4.
+* Number the pieces 1..4, the positions in the square
+  1..4. We will number the square positions clockwise
+  starting from the upper left. We will number the edges of
+  the piece counterclockwise starting from the right edge.
 
         l(s, p) iff piece p is in square s  (location)
 
@@ -144,7 +147,8 @@
 
         v(p, e, n) iff piece p at edge e is n (value)
 
-* Number the rotations of each piece 0..3
+* Number the rotations of each piece 0..3. Rotations will be
+  counterclockwise.
 
         r(p, k) iff piece p has rotation k
 
@@ -158,6 +162,11 @@
 * No location contains more than one piece
 
         forall s . forall p1, p2 | p1 =/= p2 . not l(s, p1) or not l(s, p2)
+
+* First piece is in first corner (remove rotational
+  symmetry)
+  
+        l(1, 1)
 
 * Every location has a piece
 
