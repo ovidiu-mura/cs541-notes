@@ -101,8 +101,8 @@
         log(pr(E1=v1|H) ... pr(En=vn|H) pr(H)) >
         log(pr(E1=v1|not H) ... pr(En=vn|not H) pr(not H)) ?
 
-        log(pr(E1=v1|H)) +  ... + log(pr(En=vn|H) pr(H)) >
-        log(pr(E1=v1|not H)) +  ... + log(pr(En=vn|not H) pr(not H)) ?
+        log(pr(E1=v1|H)) + ... + log(pr(En=vn|H)) + log(pr(H)) >
+        log(pr(E1=v1|not H)) + ... + log(pr(En=vn|not H)) + log(pr(not H)) ?
 
 * These sums should not underflow
 
