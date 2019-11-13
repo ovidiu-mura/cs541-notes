@@ -48,8 +48,8 @@ E(y, \yhat) &= \Half (\yhat - y)^2
 
 We now compute a couple of derivatives that will be
 interesting in error analysis. Note how the derivative of
-the sigmoid squashing function $s$ is itself a simple
-function of that sigmoid.  This is convenient in the
+the {\bf htan} squashing function $s$ is a simple
+function of {\bf htan}.  This is convenient in the
 implementation, since it means that we can use a single
 routine for both training and classification.
 
@@ -106,10 +106,11 @@ have $x_i$ and $\yhat$ in the range $[0..1]$. This is the
 more common choice in the literature.
 
 The math is the same, except that we now use a slightly
-different sigmoid for our squashing function. Specifically,
-we want the sigmoid to have a range $y = [0..1]$, half the
-previous range with $\half$ offset; we also want the sigmoid
-to have its center at $x = \half$ instead of at $x = 0$
+different squashing function. Specifically, we want the
+squashing function to have a range $y = [0..1]$, half the
+previous range with $\half$ offset; we also want the
+squashing function to have its center at $x = \half$ instead
+of at $x = 0$
 
 \begin{align}
 s(h) &= \Half \frac {e^{h - \half} - 1}  {e^{h - \half} + 1} + \Half \\
@@ -119,7 +120,7 @@ s(h) &= \Half \frac {e^{h - \half} - 1}  {e^{h - \half} + 1} + \Half \\
      &= \frac 1 {1 + \ehh}
 \end{align}
 
-This new sigmoid has a slightly different derivative.
+This new function has a slightly different derivative.
 
 \begin{align}
 E_\yhat &= \frac{\d \yhat}{\dh} \\

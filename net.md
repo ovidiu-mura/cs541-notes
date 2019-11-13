@@ -17,19 +17,21 @@
 
 * Sadly, `y = h > 0` is not so differentiable
 
-## Sigmoid Squashing Function
+## htan Squashing Function
 
-* The sigmoid function is
+* The hyperbolic tangent function is
 
-        s(h) = (e**h - 1) / (e**h + 1)
+        s(h) = (e**(2h) - 1) / (e**(2h) + 1)
 
 * You can plot it with `gnuplot`
 
-* You can add a constant to make it steeper or shallower,
+* You can adjust the constant to make it steeper or shallower,
 
         s(h) = (e**(ah) - 1) / (e**(ah) + 1)
 
-  but we won't
+  but we will just pick 1
+  
+        s(h) = (e**h - 1) / (e**h + 1)
 
 * `s(h)` is differentiable, so we can distribute error more
   fairly
@@ -100,6 +102,24 @@
                          = -a * x[i] * E
 
       (See fancy writeup)
+
+## ReLU
+
+* Our htan squashing function is OK, but slow to compute
+
+* Saturation is an issue
+
+* Here's the new hotness in squashing functions: "[Rectified
+  Linear Unit](https://en.wikipedia.org/wiki/Rectifier_%28neural_networks%29)"
+
+          s(h) = 0 (h < 0), h (otherwise)
+
+* Inspired by biology; asymmetric; many clever variations
+
+* Leads to sparsely-activated nets
+
+* Avoids the *vanishing gradient* problem where a neuron
+  gets "stuck"
 
 ## Big Nets
 
