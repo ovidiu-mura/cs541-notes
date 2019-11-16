@@ -2,20 +2,56 @@
 
 * Recall the Perceptron
 
-        h = sum[i] w[i] x[i]
+        h = sum[i] w[i] x[i] + w0
         y = h > 0
 
 * The Perceptron is trained using an error term
 
         w[i] += a (c - y) x[i]
+        w0 += a (c - y)
 
-* This isn't necessarily the best plan: it distributes
-  error equally across all weights
+## "Neural" Nets
+
+* Idea: Glue PCTS together into a DAG so that they can learn
+  more complicated functions
+
+        x1 ^ x2 = (x1 | x2) & !(x1 & x2)
+
+          w21 (w111 x1 + w112 x2 + w10 > 0)
+        + w22 (w121 x1 + w122 x2 + w20 > 0)
+        + w0 > 0
+
+  * *w111* and *w112* positive
+  * *w121* and *w122* negative
+  * *w21* positive
+  * *w22* negative
+  * *w10* and *w20* and *w0* zero
+
+* *Note:* The inner nonlinearity is critical. Otherwise
+  simple algebra gives
+
+          (w21 w111 + w22 w121) x1
+          + (w21 w112 + w22 w122) x2
+          + (w21 w10 + w22 w20 + w0) > 0
+
+        a1 x1 + a2 x2 + a0 > 0
+
+  and we're back where we started.
+
+
+## Training A Net
+
+* Obvious plan: just adjust all weights in the
+  system by the error
+
+* This isn't a workable plan: it distributes
+  error equally across all weights, including
+  those that should go "the other way"
 
 * More traditional plan: distribute error according to
   effect on the output using *∂y/∂h*
 
-* Sadly, `y = h > 0` is not so differentiable
+* Sadly, the derivative of `y = h > 0` is zero everywhere
 
 ## htan Squashing Function
 
@@ -29,12 +65,12 @@
 
         s(h) = (e**(ah) - 1) / (e**(ah) + 1)
 
-  but we will just pick 1
+  but customarily just pick 1
   
         s(h) = (e**h - 1) / (e**h + 1)
 
-* `s(h)` is differentiable, so we can distribute error more
-  fairly
+* `s(h)` has a reasonable derivative everywhere, so we can
+  distribute error more fairly
 
 ## Beyond Perceptrons
 
@@ -54,27 +90,26 @@
 
   matches the sign
 
-## "Neural" Nets
+## Leaky ReLU
 
-* Idea: Glue PCTS together into a DAG so that they can learn
-  more complicated functions
+* Our htan squashing function is OK, but slow to compute
 
-        x1 ^ x2 = (x1 | x2) & !(x1 & x2)
-        w21 (w111 x1 + w112 x2 > 0) + w22 (w121 x1 + w122 x2 > 0) > 0
+* Saturation is an issue
 
-  * *w111* and *w112* positive
-  * *w121* and *w122* negative
-  * *w21* positive
-  * *w22* negative
+* Here's the new hotness in squashing functions: "[Rectified
+  Linear Unit](https://en.wikipedia.org/wiki/Rectifier_%28neural_networks%29)".
+  We will use a "leaky" ReLU, which avoids the "stuck
+  neuron" problem
 
-* *Note:* The inner nonlinearity is critical. Otherwise
-  simple algebra gives
+          s(h) = 0.1 h (h < 0), h (otherwise)
+          ds/dh = 0.1 (h < 0), 1 (otherwise)
 
-       (w21 w111 + w22 w121) x1 + (w21 w112 + w22 w122) x2 > 0
+* Inspired by biology; asymmetric; many clever variations
 
-       a1 x1 + a2 x2 > 0
+* Leads to sparsely-activated nets
 
-  and we're back where we started.
+* Avoids the *vanishing gradient* problem where a neuron
+  gets "stuck"
 
 ## Weight Assignment
 
@@ -85,45 +120,31 @@
   PCT
 
 * Weight assignment by error *backpropagation*: gradient descent on
-  squared error
+  error
 
-    * Consider threshold case
+* Assume
 
-    * Assume
+        E = c - y
 
-            E = (c - y)**2
+  where *E* is error, *c* is target response, *y* is
+  output response
 
-      where *E* is error, *c* is target response, *y* is
-      output response
+* Change 
 
-    * Change 
+        E[j-1] = sum[k] (w[k][i] E[k])
+        w[j][i] += a E[j] y[j-i][i] dy/dx
+        w0[j][i] += a E[j] dy/dx
 
-            h'[i] - h[i] = a  dE/dh[i]
-                         = -a * x[i] * E
+  (or thereabouts; subscripts get fiddly)
 
-      (See fancy writeup)
-
-## ReLU
-
-* Our htan squashing function is OK, but slow to compute
-
-* Saturation is an issue
-
-* Here's the new hotness in squashing functions: "[Rectified
-  Linear Unit](https://en.wikipedia.org/wiki/Rectifier_%28neural_networks%29)"
-
-          s(h) = 0 (h < 0), h (otherwise)
-
-* Inspired by biology; asymmetric; many clever variations
-
-* Leads to sparsely-activated nets
-
-* Avoids the *vanishing gradient* problem where a neuron
-  gets "stuck"
+* Input layer is handled specially since there are
+  no weights to adjust there
 
 ## Big Nets
 
-* Typical architecture: input layer → hidden layers → output layer
+* Typical architecture: "input layer" → hidden layers → output layer
+
+    * Input layer is just the inputs, not actual neurons
 
     * More / wider (and fancier) hidden layers = more
       generalization ("deep learning")

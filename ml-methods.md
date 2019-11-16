@@ -94,9 +94,9 @@
 * Idea: predict the binary class as a thresholded weighted sum 
   of the features
 
-        c = sum[i] w[i] x[i] > 0
+        c = sum[i] w[i] x[i] + w0 > 0
 
-  (we will use signed weights and features: `x[i], w[i] in [-1..1]`
+  (we will use unit weights and features: `x[i], w[i] in [0..1]`
 
 * Training consists of learning appropriate weights *w*
 
@@ -107,9 +107,10 @@
     * Adjust the weights "toward the true classification"
 
             w[i] += a (c - y) x[i]
+            w0 += a (c - y)
 
       where *y* is the unthresholded output. Remember that
-      *c* and *x* are -1 or 1. *a* is the "learning rate":
+      *c* and *x* are 0 or 1. *a* is the "learning rate":
       smalller (a < 0.1) means more reliable convergence,
       larger can mean faster learning or divergence
 
