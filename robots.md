@@ -160,7 +160,7 @@
     * Duplicate a likelihood-weighted random sample of the
       the rest to restore the population
 
-* <http://github.com/BartMassey/bpt.git>
+* <http://github.com/BartMassey/pft.git>
 
 * Is this actually AI? (I think so)
 
