@@ -1,5 +1,3 @@
-## Final Review Topics
-
 * Foundations of AI
 
     * Definitions of AI
@@ -29,8 +27,15 @@
 
     * Statistical and ML
 
+        * Types of ML
+        
+            * Unsupervised
+            * Supervised
+            * Reinforcement
+
         * Methods
 
+            * K-Nearest Neighbor
             * Bayesian and Naive Bayesian
             * Information Gain and Decision Trees
             * Perceptrons and Neural Nets
